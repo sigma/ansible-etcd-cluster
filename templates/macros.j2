@@ -1,0 +1,20 @@
+{% set proto = "https" if etcd_ca_host else "http" %}
+{% set my_ip = ansible_default_ipv4.address -%}
+
+{% macro ca_file() -%}
+{{etcd_certs_root}}/ca.crt
+{%- endmacro %}
+
+{% macro key_file() -%}
+{{etcd_certs_root}}/{{inventory_hostname}}.key.insecure
+{%- endmacro %}
+
+{% macro cert_file() -%}
+{{etcd_certs_root}}/{{inventory_hostname}}.crt
+{%- endmacro %}
+
+{% macro peers() -%}
+{% set all_etcd = [] -%}
+{% set _ = all_etcd.append("%s://%s:2379" % (proto, my_ip)) -%}
+{{all_etcd|join(',')}}
+{%- endmacro %}

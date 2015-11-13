@@ -1,0 +1,20 @@
+---
+- name: refresh environment
+  sudo: yes
+  sudo_user: root
+  assemble: src={{env_fragments_dir}} dest={{env_file}} mode=0644
+
+- name: reload systemd
+  sudo: true
+  command: systemctl daemon-reload
+  notify:
+    - restart daemons
+
+- name: restart daemons
+  command: /bin/true
+  notify:
+    - restart etcd install
+
+- name: restart etcd install
+  sudo: true
+  service: name=etcd-install.service state=restarted enabled=yes

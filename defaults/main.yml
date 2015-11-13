@@ -10,3 +10,6 @@ etcd_certs_root: "/etc/ssl/etcd"
 local_certs: "certs"
 
 etcd_core_group: ""
+
+env_file: "/etc/environment"
+env_fragments_dir: "/etc/env.d"
